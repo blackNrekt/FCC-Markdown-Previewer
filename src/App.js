@@ -1,23 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import { useState } from "react";
+import { marked } from "marked";
 
 function App() {
+  const [text, setText] = useState(`
+  # H1
+  ## H2
+  [title](https://www.freecodecamp.com)
+  \`code\`
+  \`\`\`
+  {
+    "firstName": "John",
+    "lastName": "Smith",
+    "age": 25
+  }
+  \`\`\`
+  
+  - First item
+  - Second item
+  - Third item
+  
+  > blockquote
+
+  ![alt text](image.jpg)
+
+  **bold text**
+  `);
+
+  marked.setOptions({
+    breaks:true
+  })
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className='text-center px-4'>
+        <h2 >Your Markdown</h2>      
+        <textarea id="editor" value={text} onChange={e => {setText(e.target.value)}}></textarea>      
+        <h3 className='mt-3'>Output</h3>
+      </div>
+      <div id="preview" dangerouslySetInnerHTML={{__html: marked(text),}}></div>      
+      
     </div>
   );
 }
